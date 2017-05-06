@@ -29,7 +29,12 @@ public class KitchenConsumer
 
     public KitchenConsumer()
     {
+        TracingInterceptor tracingInterceptor = new TracingInterceptor(
+                GlobalTracer.get(),
+                Arrays.asList(SpanDecorator.STANDARD_TAGS));
         client = new OkHttpClient.Builder()
+                .addInterceptor(tracingInterceptor)
+                .addNetworkInterceptor(tracingInterceptor)
                 .build();
 
         jsonType = MediaType.parse("application/json");
